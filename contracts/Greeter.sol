@@ -4,6 +4,7 @@ pragma solidity ^0.8.15;
 import "hardhat/console.sol";
 
 contract Greeter {
+    mapping (address => uint256) balances;
     string private greeting;
 
     constructor(string memory _greeting) {
@@ -18,5 +19,10 @@ contract Greeter {
     function setGreeting(string memory _greeting) public {
         console.log("Changing greeting from '%s' to '%s'", greeting, _greeting);
         greeting = _greeting;
+    }
+
+    function payMe() external payable {
+        require(msg.value>=0.2 ether);
+        balances[msg.sender]=balances[msg.sender]+msg.value;
     }
 }
