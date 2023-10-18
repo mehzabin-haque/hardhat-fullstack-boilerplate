@@ -7,8 +7,13 @@ Starting project with typescript hardhat boilerplate
 ```
 Node js
 npm
+yarn
 ```
 ## Install dependencies
+Install yarn:
+```
+npm i yarn
+```
 For contract dev:
 Run this command on the root folder:
 ```
