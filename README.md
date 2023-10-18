@@ -2,6 +2,27 @@
 
 Starting project with typescript hardhat boilerplate
 
+
+## Prerequisite
+```
+Node js
+npm
+```
+## Install dependencies
+For contract dev:
+Run this command on the root folder:
+```
+npm i
+```
+
+For contract dev:
+Go to `frontend` folder and install node modules:
+```
+cd frontend
+npm i
+
+```
+
 ## Instruction
 - Compile:
 ```
