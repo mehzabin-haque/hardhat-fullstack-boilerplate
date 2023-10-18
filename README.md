@@ -17,19 +17,32 @@ npm i yarn
 For contract dev:
 Run this command on the root folder:
 ```
-npm i
+yarn
 ```
 
 For contract dev:
 Go to `frontend` folder and install node modules:
 ```
 cd frontend
-npm i
+yarn
 
 ```
 
 ## Instruction
-- Compile:
+- Install a wallet like [Metamask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn)
+- Copy `.env.example` to `.env`
+  * Mac or Linux
+    * ```cp .env.example .env```
+  * Windows
+    * ```copy .env.example .env```
+- Set the env variable in `.env` file:
+
+Variable descriptions:
+
+1. `RPC_NODE_API_KEY`: Get from [Alchemy site](https://auth.alchemy.com/signup/) after sign up and login
+2. `PRIVATE_KEY`: Export private key from metamask, follow these [instructions](https://support.metamask.io/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key)
+3. `ETHERSCAN_API_KEY`: Get from [etherscan](https://etherscan.io/login)
+- Compile Contract:
 ```
 npm run compile
 ```
