@@ -12,3 +12,6 @@ artifacts
 #Mac
 .DS_Store
 
+#For next app
+.next/
+
