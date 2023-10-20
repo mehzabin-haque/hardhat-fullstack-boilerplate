@@ -1,15 +1,18 @@
 import { ethers } from 'hardhat';
 import { expect } from 'chai';
+import { Greeter__factory, Greeter } from '../frontend/typechain'
+
 
 describe('greeter', () => {
 	it("should return the new greeting once it's changed", async () => {
-		const Greeter = await ethers.getContractFactory('Greeter');
-		const greeter = await Greeter.deploy('Hello, world!');
+    const signers = await ethers.getSigners();
 
-		await greeter.deployed();
-		expect(await greeter.greet()).to.equal('Hello, world!');
+    // We simply assign the first signer to ownerSigner
+    const ownerSigner = signers[0];
 
-		await greeter.setGreeting('Hola, mundo!');
-		expect(await greeter.greet()).to.equal('Hola, mundo!');
+		const GreeterContract: Greeter = await new Greeter__factory(ownerSigner).deploy("Hello world!");
+		let tx = await GreeterContract.setGreeting('Hola, mundo!');
+    await tx.wait();
+		expect(await GreeterContract.greet()).to.equal('Hola, mundo!');
 	});
 });
