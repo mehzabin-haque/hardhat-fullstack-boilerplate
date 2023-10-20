@@ -246,8 +246,8 @@ function Main() {
                   <h4 className="font-bold">Current Greetings:</h4>
 
                   <div>
-                    {data?.toString()}
-                    <button disabled={isRefetching} onClick={() => refetch()} style={{ marginLeft: 4 }}>
+                    <p>{data?.toString()}</p>
+                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' disabled={isRefetching} onClick={() => refetch()} style={{ marginLeft: 4 }}>
                       {isRefetching ? 'loading...' : 'refetch'}
                     </button>
                   </div>
