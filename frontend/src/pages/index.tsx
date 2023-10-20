@@ -10,7 +10,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import { useSignMessage } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
-import { Greeter__factory } from '../typechain';
+import { Greeter__factory } from '../../typechain/factories/Greeter__factory';
 
 export default function Home() {
   return (
@@ -58,17 +58,13 @@ function Main() {
     } else {
       console.log('No Wallet found. Connect Wallet')
     }
-    await window.ethereum.enable();
+    // await window.ethereum.enable();
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
   
 
     contract = Greeter__factory.connect(data.contractAddress, signer);
-    console.log("Get method:");
-    
-    console.log(contract);
-    
-    console.log(await contract.greet());
+  
     setgreet(await contract.greet() as string);
   }
 
