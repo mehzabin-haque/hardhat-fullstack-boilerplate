@@ -6,7 +6,7 @@ import HeadGlobal from 'components/HeadGlobal'
 // Web3Wrapper deps:
 import { getDefaultWallets, RainbowKitProvider, lightTheme, darkTheme } from '@rainbow-me/rainbowkit'
 import { Chain } from '@rainbow-me/rainbowkit'
-import {  configureChains, WagmiConfig } from 'wagmi'
+import {  configureChains, WagmiConfig, createConfig } from 'wagmi'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 
 import { publicProvider } from 'wagmi/providers/public'
@@ -30,15 +30,15 @@ export default App
 
 
 // Web3 Configs
-const { chains, publicClient, webSocketPublicClient  } = configureChains(
+const { chains, publicClient  } = configureChains(
   [avalanche, goerli, mainnet, optimism, sepolia ],
   [
     alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY! }),
     publicProvider(),
   ]
 )
-const { connectors } = getDefaultWallets({ appName: app.name, chains })
-const wagmiClient = createClient({ autoConnect: true, connectors, provider })
+const { connectors } = getDefaultWallets({ appName: app.name, chains, projectId: app.name })
+const wagmiClient = createConfig({ autoConnect: true, connectors, publicClient })
 
 // Web3Wrapper
 export function Web3Wrapper({ children }) {
@@ -49,7 +49,7 @@ export function Web3Wrapper({ children }) {
   if (!mounted) return null
 
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiClient}>
       <RainbowKitProvider
         chains={chains}
         initialChain={1} // Optional, initialChain={1}, initialChain={chain.mainnet}, initialChain={gnosisChain}

@@ -10,7 +10,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import { useSignMessage } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
-import { Greeter__factory } from '../../typechain/factories/Greeter__factory';
+import { Greeter__factory, Greeter } from '../../typechain';
 
 export default function Home() {
   return (
@@ -44,46 +44,54 @@ function Main() {
   const [showAlert, setShowAlert] = useState(false);
   const [txHash, setTxHash] = useState("");
 
+  let contract: Greeter;
+  const { address, isConnected, connector } = useAccount({
+    async onConnect({ address, connector, isReconnected }) {
+      console.log('Connected', { address, connector, isReconnected })
+      const signer = await connector.getProvider();
+      contract = Greeter__factory.connect(data.contractAddress, signer);
+    },
+  })
   // greeter.greet
   const [greet, setgreet] = useState("Hi");
   const [currentValue, setCurrentValue] = useState("");
 
-  let contract;
-
-
-  async function checkIfWalletIsConnected() {
-    const { ethereum } = window
-    if (ethereum) {
-      console.log('Got the ethereum obejct: ', ethereum)
-    } else {
-      console.log('No Wallet found. Connect Wallet')
-    }
-    // await window.ethereum.enable();
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+ 
+ 
   
 
-    contract = Greeter__factory.connect(data.contractAddress, signer);
-  
-    setgreet(await contract.greet() as string);
-  }
 
-  useEffect(() => {
-    checkIfWalletIsConnected();
-  }, [])
+  // async function checkIfWalletIsConnected() {
+  //   // const { ethereum } = window
+  //   // if (ethereum) {
+  //   //   console.log('Got the ethereum obejct: ', ethereum)
+  //   // } else {
+  //   //   console.log('No Wallet found. Connect Wallet')
+  //   // }
+  //   // await window.ethereum.enable();
+  //   // const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   // const signer = provider.getSigner();
+  
+
+   
+  //   setgreet(await contract.greet() as string);
+  // }
+
+  // useEffect(() => {
+  //   checkIfWalletIsConnected();
+  // }, [])
   console.log(data.contractAddress);
 
   async function setGreetings(evt) {
     evt.preventDefault();
     
-    checkIfWalletIsConnected();
+    // checkIfWalletIsConnected();
     console.log("Set greeting");
     
     console.log("Set method:");
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    contract = Greeter__factory.connect(data.contractAddress, signer);
-    let tx = await contract.setGreeting(currentValue.toString(), {from: signer.getAddress(), gasLimit: 200000, value: 10000000000000});
+   
+    
+    let tx = await contract.setGreeting(currentValue.toString(), {from: address, gasLimit: 200000, value: 10000000000000});
     let reciept = await tx.wait();
     console.log(reciept);
     setTxHash(reciept.transactionHash);
@@ -98,11 +106,11 @@ function Main() {
   }
 
 
-  const { address, isConnected, connector } = useAccount()
+  
   const { chain, chains } = useNetwork()
   const { isLoading: isNetworkLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    addressOrName: address,
+    address
   })
 
   const { openConnectModal } = useConnectModal()
