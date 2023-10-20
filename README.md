@@ -20,7 +20,7 @@ Run this command on the root folder:
 yarn
 ```
 
-For contract dev:
+For Frontend dev:
 Go to `frontend` folder and install node modules:
 ```
 cd frontend
@@ -35,7 +35,7 @@ yarn
     * ```cp .env.example .env```
   * Windows
     * ```copy .env.example .env```
-- Set the env variable in `.env` file:
+- Set the env variable in `.env` file on root level and on `frontend` folder:
 
 Variable descriptions:
 
@@ -56,6 +56,6 @@ npm run deploy:<network>
 ```
 - Verify on etherscan
 ```
-npx hardhat verify --network rinkeby <YOUR_CONTRACT_ADDRESS>
+npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS>
 ```
 
