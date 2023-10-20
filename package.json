@@ -33,9 +33,9 @@
     "solhint-plugin-prettier": "0.0.5"
   },
   "scripts": {
-    "clean": "npx hardhat clean",
     "chain": "npx hardhat node",
     "compile": "npx hardhat compile",
+    "clean": "rm -fr ./artifacts ./cache ./frontnend/typechain",
     "deploy": "npx hardhat run --network localhost scripts/deploy.ts",
     "deploy:rinkeby": "npx hardhat run --network rinkeby scripts/deploy.ts",
     "deploy:ropsten": "npx hardhat run --network ropsten scripts/deploy.ts",
