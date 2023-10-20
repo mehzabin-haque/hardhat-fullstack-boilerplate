@@ -1,6 +1,6 @@
 import styles from 'styles/Home.module.scss'
-import data from '../info/data.json';
-import { ethers } from 'ethers'
+import contractDetails from '../info/contractDetails.json'
+import { ethers, Signer } from 'ethers'
 import ThemeToggleButton from 'components/Theme/ThemeToggleButton'
 import ThemeToggleList from 'components/Theme/ThemeToggleList'
 import { useState, useEffect } from 'react'
@@ -8,9 +8,9 @@ import { useNetwork, useSwitchNetwork, useAccount, useBalance } from 'wagmi'
 import ConnectWallet from 'components/Connect/ConnectWallet'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
-import { useSignMessage } from 'wagmi'
+import { useSignMessage, useContractRead } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
-import { Greeter__factory, Greeter } from '../../typechain';
+import { Greeter__factory, Greeter } from '../../typechain'
 
 export default function Home() {
   return (
@@ -41,25 +41,28 @@ function Header() {
 }
 
 function Main() {
-  const [showAlert, setShowAlert] = useState(false);
-  const [txHash, setTxHash] = useState("");
+  const [showAlert, setShowAlert] = useState(false)
+  const [txHash, setTxHash] = useState('')
+  console.log("contract Address:")
 
-  let contract: Greeter;
+  console.log(contractDetails.contractAddress)
+  console.log("ABI:")
+  console.log(Greeter__factory.abi)
+  const { data, isRefetching, refetch } = useContractRead({
+    address: contractDetails.contractAddress as `0x${string}`,
+    abi: Greeter__factory.abi,
+    functionName: 'greet',
+  })
+  console.log(data)
+
   const { address, isConnected, connector } = useAccount({
     async onConnect({ address, connector, isReconnected }) {
       console.log('Connected', { address, connector, isReconnected })
-      const signer = await connector.getProvider();
-      contract = Greeter__factory.connect(data.contractAddress, signer);
     },
   })
   // greeter.greet
-  const [greet, setgreet] = useState("Hi");
-  const [currentValue, setCurrentValue] = useState("");
 
- 
- 
-  
-
+  const [currentValue, setCurrentValue] = useState('')
 
   // async function checkIfWalletIsConnected() {
   //   // const { ethereum } = window
@@ -71,46 +74,38 @@ function Main() {
   //   // await window.ethereum.enable();
   //   // const provider = new ethers.providers.Web3Provider(window.ethereum);
   //   // const signer = provider.getSigner();
-  
 
-   
   //   setgreet(await contract.greet() as string);
   // }
 
   // useEffect(() => {
   //   checkIfWalletIsConnected();
   // }, [])
-  console.log(data.contractAddress);
+  console.log(contractDetails.contractAddress)
 
   async function setGreetings(evt) {
-    evt.preventDefault();
-    
-    // checkIfWalletIsConnected();
-    console.log("Set greeting");
-    
-    console.log("Set method:");
-   
-    
-    let tx = await contract.setGreeting(currentValue.toString(), {from: address, gasLimit: 200000, value: 10000000000000});
-    let reciept = await tx.wait();
-    console.log(reciept);
-    setTxHash(reciept.transactionHash);
-    setShowAlert(true);
-    setgreet(await contract.greet());
+    // evt.preventDefault();
+    // // checkIfWalletIsConnected();
+    // console.log("Set greeting");
+    // console.log("Set method:");
+    // let tx = await Greeter__factory.setGreeting(currentValue.toString(), {from: address, gasLimit: 200000, value: 10000000000000});
+    // let reciept = await tx.wait();
+    // console.log(reciept);
+    // setTxHash(reciept.transactionHash);
+    // setShowAlert(true);
+    // setgreet(await contract.greet());
   }
 
   function handleChange(evt) {
-    console.log(evt.currentTarget.value);
+    console.log(evt.currentTarget.value)
 
-    setCurrentValue(evt.currentTarget.value);
+    setCurrentValue(evt.currentTarget.value)
   }
 
-
-  
   const { chain, chains } = useNetwork()
   const { isLoading: isNetworkLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address
+    address,
   })
 
   const { openConnectModal } = useConnectModal()
@@ -136,7 +131,7 @@ function Main() {
             <button
               onClick={openConnectModal}
               type="button"
-              className="m-1 rounded-lg bg-orange-500 py-1 px-3 text-white transition-all duration-150 hover:scale-105"
+              className="m-1 rounded-lg bg-orange-500 px-3 py-1 text-white transition-all duration-150 hover:scale-105"
             >
               useConnectModal
             </button>
@@ -146,7 +141,7 @@ function Main() {
             <button
               onClick={openAccountModal}
               type="button"
-              className="m-1 rounded-lg bg-orange-500 py-1 px-3 text-white transition-all duration-150 hover:scale-105"
+              className="m-1 rounded-lg bg-orange-500 px-3 py-1 text-white transition-all duration-150 hover:scale-105"
             >
               useAccountModal
             </button>
@@ -156,7 +151,7 @@ function Main() {
             <button
               onClick={openChainModal}
               type="button"
-              className="m-1 rounded-lg bg-orange-500 py-1 px-3 text-white transition-all duration-150 hover:scale-105"
+              className="m-1 rounded-lg bg-orange-500 px-3 py-1 text-white transition-all duration-150 hover:scale-105"
             >
               useChainModal
             </button>
@@ -191,7 +186,7 @@ function Main() {
                   onClick={() => switchNetwork?.(x.id)}
                   className={
                     (x.id === chain?.id ? 'bg-green-500' : 'bg-blue-500 hover:scale-105') +
-                    ' m-1 rounded-lg py-1 px-3 text-white transition-all duration-150'
+                    ' m-1 rounded-lg px-3 py-1 text-white transition-all duration-150'
                   }
                 >
                   {x.name}
@@ -206,123 +201,83 @@ function Main() {
           <dd className="break-all">
             {isBalanceLoading ? 'loading' : balance ? `${balance?.formatted} ${balance?.symbol}` : 'n/a'}
           </dd>
-          <dt>Sign Message</dt>
-          <dd className="break-all">{address ? <SignMsg /> : 'n/a'} </dd>
         </dl>
       </div>
       {showAlert ? (
-              <div
-              className={
-                "text-white px-6 py-4 border-0 rounded relative mb-4 bg-teal-500 sticky top-0 z-50"
-              }
-            >
-              <span className="text-xl inline-block mr-5 align-middle">
-                <i className="fas fa-bell" />
-              </span>
-              <span className="inline-block align-middle mr-8">
-                <b className="capitalize">Transaction succeded!</b> View on etherscan: 
-           <a href={"https://rinkeby.etherscan.io/tx/"+txHash} target="_blank" className="underline italic"> Etherscan Link</a>
-                
-              </span>
-              <button
-                className="absolute bg-transparent text-2xl font-semibold leading-none right-0 top-0 mt-4 mr-6 outline-none focus:outline-none"
-                onClick={() => setShowAlert(false)}
-              >
-                <span>×</span>
-              </button>
-            </div>
-          ) : null } 
+        <div className={'relative sticky top-0 z-50 mb-4 rounded border-0 bg-teal-500 px-6 py-4 text-white'}>
+          <span className="mr-5 inline-block align-middle text-xl">
+            <i className="fas fa-bell" />
+          </span>
+          <span className="mr-8 inline-block align-middle">
+            <b className="capitalize">Transaction succeded!</b> View on etherscan:
+            <a href={'https://rinkeby.etherscan.io/tx/' + txHash} target="_blank" className="italic underline">
+              {' '}
+              Etherscan Link
+            </a>
+          </span>
+          <button
+            className="absolute right-0 top-0 mr-6 mt-4 bg-transparent text-2xl font-semibold leading-none outline-none focus:outline-none"
+            onClick={() => setShowAlert(false)}
+          >
+            <span>×</span>
+          </button>
+        </div>
+      ) : null}
       {address && (
-        
-        <div className='flex items-center justify-center min-h-screen from-teal-100 via-teal-300 to-teal-500 bg-gradient-to-br w-screen'>
-          
-         
-          <div className="flex flex-col items-center justify-center relative">
-
+        <div className="flex min-h-screen w-screen items-center justify-center bg-gradient-to-br from-teal-100 via-teal-300 to-teal-500">
+          <div className="relative flex flex-col items-center justify-center">
             <div
               id="partnerCard"
-              className="bg-[#1c1c1c] text-gray-50 overflow-hidden rounded-md max-w-m p-2 min-h-[500px] flex flex-col"
+              className="max-w-m flex min-h-[500px] flex-col overflow-hidden rounded-md bg-[#1c1c1c] p-2 text-gray-50"
             >
               <div>
-                <h3 className="text-left pl-8 pb-4 pt-2 text-xl">
-                  Greeting App
-                </h3>
+                <h3 className="pb-4 pl-8 pt-2 text-left text-xl">Greeting App</h3>
               </div>
 
-              <div className="flex items-center justify-center bg-[#2a2a2a] min-h-[200px]">
-
-
+              <div className="flex min-h-[200px] items-center justify-center bg-[#2a2a2a]">
                 <img
                   src="https://media.istockphoto.com/photos/hand-is-turning-a-dice-and-changes-the-word-meet-to-greet-picture-id1084115310?k=20&m=1084115310&s=612x612&w=0&h=TwrnLk7i0jdfixAxbJdd8_LF9ZOnkvM-1DGn-_VELHA="
                   alt="EasyCode"
                   className="w-100 object-cover"
                 />
-
               </div>
               <div className="grid grid-cols-6">
-                <div className="p-4 pr-0 text-lg col-span-4">
-                  <h4 className="font-bold">
-                    Current Greetings:
-                  </h4>
+                <div className="col-span-4 p-4 pr-0 text-lg">
+                  <h4 className="font-bold">Current Greetings:</h4>
 
-                  <p>{greet}</p>
+                  <div>
+                    {data?.toString()}
+                    <button disabled={isRefetching} onClick={() => refetch()} style={{ marginLeft: 4 }}>
+                      {isRefetching ? 'loading...' : 'refetch'}
+                    </button>
+                  </div>
                 </div>
-
               </div>
               <div>
                 <form className="m-4 flex">
-                  <input value={currentValue}
-                    onChange={(evt) => handleChange(evt)}
-                    className="rounded-l-lg p-4 border-t mr-0 border-b border-l text-gray-800 border-gray-200 bg-white" placeholder="Enter new greet" />
+                  <input
+                    value={currentValue}
+                    onChange={evt => handleChange(evt)}
+                    className="mr-0 rounded-l-lg border-b border-l border-t border-gray-200 bg-white p-4 text-gray-800"
+                    placeholder="Enter new greet"
+                  />
                   <button
-                   onClick={setGreetings}
-                   className="px-8 rounded-r-lg bg-yellow-400  text-gray-800 font-bold p-4 uppercase border-yellow-500 border-t border-b border-r">Set Greet</button>
+                    onClick={setGreetings}
+                    className="rounded-r-lg border-b border-r  border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
+                  >
+                    Set Greet
+                  </button>
                 </form>
               </div>
-
             </div>
-
           </div>
         </div>
-      )
-
-
-      }
+      )}
     </main>
   )
 }
 
-function SignMsg() {
-  const [msg, setMsg] = useState('Dapp Starter')
 
-  const { data, isError, isLoading, isSuccess, signMessage } = useSignMessage({
-    message: msg,
-  })
-  const signMsg = () => {
-    if (msg) {
-      signMessage()
-    }
-  }
-
-  return (
-    <>
-      <p>
-        <input value={msg} onChange={e => setMsg(e.target.value)} className="rounded-lg p-1" />
-        <button
-          disabled={isLoading}
-          onClick={() => signMsg()}
-          className="ml-1 rounded-lg bg-blue-500 py-1 px-2 text-white transition-all duration-150 hover:scale-105"
-        >
-          Sign
-        </button>
-      </p>
-      <p>
-        {isSuccess && <span>Signature: {data}</span>}
-        {isError && <span>Error signing message</span>}
-      </p>
-    </>
-  )
-}
 
 function Footer() {
   return (
@@ -341,7 +296,3 @@ function Footer() {
     </footer>
   )
 }
-function addressOrName(address: string, addressOrName: any) {
-  throw new Error('Function not implemented.');
-}
-
