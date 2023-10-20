@@ -10,7 +10,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import { useContractRead } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
-import { Greeter__factory, Greeter } from '../../typechain'
+import { Greeter__factory } from '../../typechain'
 
 export default function Home() {
   return (
@@ -60,47 +60,6 @@ function Main() {
       console.log('Connected', { address, connector, isReconnected })
     },
   })
-  // greeter.greet
-
-  const [currentValue, setCurrentValue] = useState('')
-
-  // async function checkIfWalletIsConnected() {
-  //   // const { ethereum } = window
-  //   // if (ethereum) {
-  //   //   console.log('Got the ethereum obejct: ', ethereum)
-  //   // } else {
-  //   //   console.log('No Wallet found. Connect Wallet')
-  //   // }
-  //   // await window.ethereum.enable();
-  //   // const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   // const signer = provider.getSigner();
-
-  //   setgreet(await contract.greet() as string);
-  // }
-
-  // useEffect(() => {
-  //   checkIfWalletIsConnected();
-  // }, [])
-  console.log(contractDetails.contractAddress)
-
-  async function setGreetings(evt) {
-    // evt.preventDefault();
-    // // checkIfWalletIsConnected();
-    // console.log("Set greeting");
-    // console.log("Set method:");
-    // let tx = await Greeter__factory.setGreeting(currentValue.toString(), {from: address, gasLimit: 200000, value: 10000000000000});
-    // let reciept = await tx.wait();
-    // console.log(reciept);
-    // setTxHash(reciept.transactionHash);
-    // setShowAlert(true);
-    // setgreet(await contract.greet());
-  }
-
-  function handleChange(evt) {
-    console.log(evt.currentTarget.value)
-
-    setCurrentValue(evt.currentTarget.value)
-  }
 
   const { chain, chains } = useNetwork()
   const { isLoading: isNetworkLoading, pendingChainId, switchNetwork } = useSwitchNetwork()
@@ -253,22 +212,7 @@ function Main() {
                   </div>
                 </div>
               </div>
-              <div>
-                <form className="m-4 flex">
-                  <input
-                    value={currentValue}
-                    onChange={evt => handleChange(evt)}
-                    className="mr-0 rounded-l-lg border-b border-l border-t border-gray-200 bg-white p-4 text-gray-800"
-                    placeholder="Enter new greet"
-                  />
-                  <button
-                    onClick={setGreetings}
-                    className="rounded-r-lg border-b border-r  border-t border-yellow-500 bg-yellow-400 p-4 px-8 font-bold uppercase text-gray-800"
-                  >
-                    Set Greet
-                  </button>
-                </form>
-              </div>
+              {/*  */}
             </div>
           </div>
         </div>
