@@ -52,7 +52,7 @@ export function Web3Wrapper({ children }) {
     <WagmiConfig config={wagmiClient}>
       <RainbowKitProvider
         chains={chains}
-        initialChain={1} // Optional, initialChain={1}, initialChain={chain.mainnet}, initialChain={gnosisChain}
+        initialChain={sepolia} // Optional, initialChain={1}, initialChain={chain.mainnet}, initialChain={gnosisChain}
         showRecentTransactions={true}
         theme={resolvedTheme === 'dark' ? darkTheme() : lightTheme()}
       >
