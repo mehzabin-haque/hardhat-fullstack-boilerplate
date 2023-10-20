@@ -1,4 +1,13 @@
 import { ethers } from "hardhat";
+import fs from 'fs';
+import path from 'path';
+
+const contractDetailsDataPath = path.join(__dirname, "../", "frontend", "src", "info", "data.json");
+
+
+const jsonData = fs.readFileSync(contractDetailsDataPath, 'utf8');
+const jsonObject = JSON.parse(jsonData);
+
 
 async function main() {
   // const lockedAmount = ethers.utils.parseEther("1");
@@ -10,6 +19,10 @@ async function main() {
   await greeter.deployed();
 
   console.log("Greeting contract deployed to: ", greeter.address);
+
+  jsonObject.contractAddress = greeter.address;
+  const updatedJsonData = JSON.stringify(jsonObject, null, 2);
+  fs.writeFileSync(contractDetailsDataPath, updatedJsonData, 'utf8');
 }
 
 // We recommend this pattern to be able to use async/await everywhere
