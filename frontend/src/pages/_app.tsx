@@ -6,10 +6,11 @@ import HeadGlobal from 'components/HeadGlobal'
 // Web3Wrapper deps:
 import { getDefaultWallets, RainbowKitProvider, lightTheme, darkTheme } from '@rainbow-me/rainbowkit'
 import { Chain } from '@rainbow-me/rainbowkit'
-import { chain, createClient, configureChains, WagmiConfig } from 'wagmi'
-import { infuraProvider } from 'wagmi/providers/infura'
+import {  configureChains, WagmiConfig } from 'wagmi'
+import { alchemyProvider } from 'wagmi/providers/alchemy'
+
 import { publicProvider } from 'wagmi/providers/public'
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+import { avalanche, goerli, mainnet, optimism, sepolia } from 'wagmi/chains'
 import { useTheme } from 'next-themes'
 import { app } from 'appConfig'
 import { useState, useEffect } from 'react'
@@ -27,38 +28,12 @@ function App({ Component, pageProps }: AppProps) {
 }
 export default App
 
-// Add Custom Chain
-const gnosisChain: Chain = {
-  id: 100,
-  name: 'Gnosis',
-  network: 'gnosis',
-  iconUrl: 'https://gnosis.io/wp-content/themes/lessrain/images/favicon/apple-touch-icon.png',
-  iconBackground: '#000',
-  nativeCurrency: {
-    decimals: 18,
-    name: 'xDai',
-    symbol: 'XDAI',
-  },
-  rpcUrls: {
-    default: 'https://gnosischain-rpc.gateway.pokt.network',
-  },
-  blockExplorers: {
-    default: { name: 'BlockScout', url: 'https://blockscout.com/xdai/mainnet' },
-  },
-  testnet: true,
-}
 
 // Web3 Configs
-const { chains, provider } = configureChains(
-  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, gnosisChain, chain.rinkeby, chain.ropsten],
+const { chains, publicClient, webSocketPublicClient  } = configureChains(
+  [avalanche, goerli, mainnet, optimism, sepolia ],
   [
-    infuraProvider({ infuraId: process.env.NEXT_PUBLIC_INFURA_ID !== '' && process.env.NEXT_PUBLIC_INFURA_ID }),
-    jsonRpcProvider({
-      rpc: chain => {
-        if (chain.id !== gnosisChain.id) return null
-        return { http: chain.rpcUrls.default }
-      },
-    }),
+    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY! }),
     publicProvider(),
   ]
 )
