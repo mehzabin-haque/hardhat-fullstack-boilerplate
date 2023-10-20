@@ -2,6 +2,8 @@ import styles from 'styles/Home.module.scss'
 import contractDetails from '../info/contractDetails.json'
 
 import ThemeToggleButton from 'components/Theme/ThemeToggleButton'
+import { SetGreetings } from 'components/SetGreetings'
+
 import ThemeToggleList from 'components/Theme/ThemeToggleList'
 import { useState } from 'react'
 import { useNetwork, useSwitchNetwork, useAccount, useBalance } from 'wagmi'
@@ -212,7 +214,7 @@ function Main() {
                   </div>
                 </div>
               </div>
-              {/*  */}
+              <SetGreetings />
             </div>
           </div>
         </div>

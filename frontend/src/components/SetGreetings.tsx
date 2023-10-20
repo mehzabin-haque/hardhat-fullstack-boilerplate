@@ -8,20 +8,21 @@ import { stringify } from '../utils/stringify'
 import contractDetails from '../info/contractDetails.json'
 import { useState } from 'react'
 
-export function WriteContract() {
+export function SetGreetings() {
   const [currentValue, setCurrentValue] = useState('')
 
   const { config } = usePrepareContractWrite({
     address: contractDetails.contractAddress as `0x${string}`,
     abi: Greeter__factory.abi,
-    functionName: 'setGreetings',
+    functionName: 'setGreeting',
     args: [currentValue],
   })
-  const { data, isLoading, isSuccess, write } = useContractWrite(config)
+  const { data, isLoading, isSuccess, write: addGreetings } = useContractWrite(config)
 
   const { data: receipt, isLoading: isPending } = useWaitForTransaction({ hash: data?.hash })
-
+  
   function handleChange(evt) {
+    console.log(evt.currentTarget.value)
     setCurrentValue(evt.currentTarget.value)
   }
   return (
@@ -30,7 +31,7 @@ export function WriteContract() {
         className="m-4 flex"
         onSubmit={e => {
           e.preventDefault()
-          write()
+          addGreetings()
         }}
       >
         <input
@@ -52,7 +53,7 @@ export function WriteContract() {
         <>
           <div>Transaction Hash: {data?.hash}</div>
           <div>
-            Transaction Receipt: <pre>{stringify(receipt, null, 2)}</pre>
+            Transaction Link: <a target="_blank" href={"https://sepolia.etherscan.io/tx/"+data?.hash}>Link</a>
           </div>
         </>
       )}
