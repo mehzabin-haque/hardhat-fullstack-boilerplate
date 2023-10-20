@@ -1,14 +1,14 @@
 import styles from 'styles/Home.module.scss'
 import contractDetails from '../info/contractDetails.json'
-import { ethers, Signer } from 'ethers'
+
 import ThemeToggleButton from 'components/Theme/ThemeToggleButton'
 import ThemeToggleList from 'components/Theme/ThemeToggleList'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNetwork, useSwitchNetwork, useAccount, useBalance } from 'wagmi'
 import ConnectWallet from 'components/Connect/ConnectWallet'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
-import { useSignMessage, useContractRead } from 'wagmi'
+import { useContractRead } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
 import { Greeter__factory, Greeter } from '../../typechain'
 
