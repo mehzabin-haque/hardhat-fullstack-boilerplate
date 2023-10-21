@@ -24,5 +24,14 @@ describe('greeter', () => {
 		expect(await greeter.greet()).to.equal('Hola, mundo!');
 	});
 
-  
+  it("Send ether to payment function", async function () {
+    const { greeter, owner } = await loadFixture(deployOnceFixture);
+    const payMeTx = await greeter.payMe({
+      value: ethers.utils.parseEther("0.2")
+    });
+    await payMeTx.wait();
+    const balance = Number(await greeter.connect(owner).provider.getBalance(greeter.address))
+    expect(ethers.utils.formatEther(balance+"") == "0.2");
+  });
+
 });
