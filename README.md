@@ -53,6 +53,9 @@ Variable descriptions:
 1. `RPC_NODE_API_KEY`: Get from [Alchemy site](https://auth.alchemy.com/signup/) after sign up and login
 2. `PRIVATE_KEY`: Export private key from metamask, follow these [instructions](https://support.metamask.io/hc/en-us/articles/360015289632-How-to-export-an-account-s-private-key)
 3. `ETHERSCAN_API_KEY`: Get from [etherscan](https://etherscan.io/login)
+
+Frontend ENV Variable:
+4. `NEXT_PUBLIC_ALCHEMY_API_KEY` : Same as `RPC_NODE_API_KEY` 
 - Compile Contract:
 ```
 npm run compile
