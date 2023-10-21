@@ -1,18 +1,21 @@
 import { ethers } from 'hardhat';
+import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from 'chai';
 import { Greeter__factory, Greeter } from '../frontend/typechain'
 
 
 describe('greeter', () => {
+
+  async function deployOnceFixture() {
+    const [owner, ...otherAccounts] = await ethers.getSigners();
+    const greeter: Greeter = await new Greeter__factory(owner).deploy("Hello world!");
+    return { greeter, owner, otherAccounts };
+  }
+
 	it("should return the new greeting once it's changed", async () => {
-    const signers = await ethers.getSigners();
-
-    // We simply assign the first signer to ownerSigner
-    const ownerSigner = signers[0];
-
-		const GreeterContract: Greeter = await new Greeter__factory(ownerSigner).deploy("Hello world!");
-		let tx = await GreeterContract.setGreeting('Hola, mundo!');
+    const { greeter, owner } = await loadFixture(deployOnceFixture);
+		let tx = await greeter.setGreeting('Hola, mundo!');
     await tx.wait();
-		expect(await GreeterContract.greet()).to.equal('Hola, mundo!');
+		expect(await greeter.greet()).to.equal('Hola, mundo!');
 	});
 });
