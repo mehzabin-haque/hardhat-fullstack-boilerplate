@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import fs from 'fs';
 import path from 'path';
 
-const contractDetailsDataPath = path.join(__dirname, "../", "frontend", "src", "info", "data.json");
+const contractDetailsDataPath = path.join(__dirname, "../", "frontend", "src", "info", "contractDetails.json");
 
 
 const jsonData = fs.readFileSync(contractDetailsDataPath, 'utf8');

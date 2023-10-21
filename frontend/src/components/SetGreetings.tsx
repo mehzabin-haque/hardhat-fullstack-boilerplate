@@ -17,7 +17,7 @@ export function SetGreetings() {
     functionName: 'setGreeting',
     args: [currentValue],
   })
-  const { data, isLoading, isSuccess, write: addGreetings } = useContractWrite(config)
+  const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
   const { data: receipt, isLoading: isPending } = useWaitForTransaction({ hash: data?.hash })
   
@@ -31,7 +31,7 @@ export function SetGreetings() {
         className="m-4 flex"
         onSubmit={e => {
           e.preventDefault()
-          addGreetings()
+          write()
         }}
       >
         <input
