@@ -12,8 +12,13 @@ describe('greeter', () => {
     return { greeter, owner, otherAccounts };
   }
 
-	it("should return the new greeting once it's changed", async () => {
+  it("Check initial greet", async function () {
     const { greeter, owner } = await loadFixture(deployOnceFixture);
+    expect(await greeter.greet()).to.equal("Hello world!");
+  });
+
+	it("Should return the new greeting once it's changed", async () => {
+    const { greeter } = await loadFixture(deployOnceFixture);
 		let tx = await greeter.setGreeting('Hola, mundo!');
     await tx.wait();
 		expect(await greeter.greet()).to.equal('Hola, mundo!');
