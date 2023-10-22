@@ -23,7 +23,7 @@ yarn
 ## Install dependencies
 Install yarn:
 ```
-npm i yarn
+npm i -g yarn
 ```
 For contract dev:
 Run this command on the root folder:
