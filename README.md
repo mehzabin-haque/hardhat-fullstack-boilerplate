@@ -70,6 +70,10 @@ npm run deploy:<network>
 ```
 - Verify on etherscan
 ```
-npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS>
+npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
+```
+For example for `Greeter` contract:
+```
+npx hardhat verify --network sepolia 0xAECD7dFD9d5ED08EA916B052D90A75366B963A61 "Hello world"
 ```
 
