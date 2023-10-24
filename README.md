@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Hardhat Full Stack Dapp Boilerplate
 
 A fullstack hardhat and wagmi based dapp boilerplate ready to hack 🙌
@@ -58,16 +59,34 @@ Frontend ENV Variable:
 4. `NEXT_PUBLIC_ALCHEMY_API_KEY` : Same as `RPC_NODE_API_KEY` 
 - Compile Contract:
 ```
+=======
+**Repository Name:** hardhat-fullstack-boilerplate
+
+# Hardhat Project Boilerplate
+
+Welcome to the Hardhat Project Boilerplate, a starting point for your full-stack TypeScript blockchain projects. This boilerplate is designed to help you kickstart your development with the Hardhat framework.
+
+## Instructions
+
+### Compilation
+To compile your project, use the following command:
+```bash
+>>>>>>> 302ec250803f16a20504d7955b9532340c93b3b9
 npm run compile
 ```
-- Run test:
-```
+
+### Testing
+Run your tests with:
+```bash
 npm run test
 ```
-- Deploy
-```
+
+### Deployment
+To deploy your contracts, utilize:
+```bash
 npm run deploy:<network>
 ```
+<<<<<<< HEAD
 - Verify on etherscan
 ```
 npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
@@ -75,5 +94,20 @@ npx hardhat verify --network sepolia <YOUR_CONTRACT_ADDRESS> <Paramaters>
 For example for `Greeter` contract:
 ```
 npx hardhat verify --network sepolia 0xAECD7dFD9d5ED08EA916B052D90A75366B963A61 "Hello world"
+=======
+Replace `<network>` with the target network for deployment.
+
+### Contract Verification on Etherscan
+To verify your contracts on Etherscan, execute:
+```bash
+npx hardhat verify --network rinkeby <YOUR_CONTRACT_ADDRESS>
+>>>>>>> 302ec250803f16a20504d7955b9532340c93b3b9
 ```
+Make sure to replace `<YOUR_CONTRACT_ADDRESS>` with your specific contract address.
+
+## Getting Started
+
+1. Clone this repository to your local machine.
+2. Navigate to the project directory.
+3. Customize the boilerplate to match your project requirements.
 
