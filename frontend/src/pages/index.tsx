@@ -12,11 +12,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useConnectModal, useAccountModal, useChainModal } from '@rainbow-me/rainbowkit'
 import { useContractRead } from 'wagmi'
 // import GreeterArtifact from '../../../artifacts/contracts/Greeter.sol/Greeter.json';
-<<<<<<< HEAD
 import { Greeter__factory } from '../../typechain'
-=======
-import { Greeter__factory } from '../../../typechain/factories/Greeter__factory';
->>>>>>> 302ec250803f16a20504d7955b9532340c93b3b9
 
 export default function Home() {
   return (
